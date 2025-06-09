@@ -4,15 +4,34 @@ document.addEventListener("DOMContentLoaded", ()=>{
     const addButton = document.getElementById("agregar")
     const taskList = document.getElementById("listaTareas")
     
-
     //cargar tareas desde Local Storage
     function loadTasks() {
-        console.log("cargando tareas");
-        
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        taskList.innerHTML=""
+
+        tasks.forEach(task => {
+            const li = document.createElement("li")
+            li.textContent = task.text
+
+            if (task.completed) {
+                li.classList.add("completed")
+            }
+
+            const deleteButton = document.createElement("button")
+            deleteButton.textContent = "Eliminar"
+            deleteButton.onclick = ()=>{
+                // deteleTask(task.text)
+                console.log("eliminando tarea");
+            }
+            li.appendChild(deleteButton)
+
+            taskList.appendChild(li)
+        });
     }
+
     //función para guardar tareas en Local Storage
     function saveTasks(tasks) {
-        console.log("guardar tareas");
+        localStorage.setItem("tasks", JSON.stringify(tasks))
     }
 
     //función para agregar una nueva tarea
@@ -20,7 +39,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         const taskText = taskImput.value.trim();
         if (taskText) {
             const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-            tasks.push({text: taskText, completed: false})            
+            tasks.push({text: taskText, completed: true})     
             taskImput.value=""
             saveTasks(tasks)
             loadTasks()
@@ -35,5 +54,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     addButton.addEventListener("click", addTask)
 
     //cargar todas las tareas al iniciar
+    loadTasks()
 })
 
