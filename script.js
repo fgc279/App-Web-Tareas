@@ -20,10 +20,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
             const deleteButton = document.createElement("button")
             deleteButton.textContent = "Eliminar"
             deleteButton.onclick = ()=>{
-                // deteleTask(task.text)
-                console.log("eliminando tarea");
+                deteleTask(task.text)
             }
             li.appendChild(deleteButton)
+            li.onclick = ()=>{
+                toggleTaskCompletion(task.text)
+            }
 
             taskList.appendChild(li)
         });
@@ -39,16 +41,31 @@ document.addEventListener("DOMContentLoaded", ()=>{
         const taskText = taskImput.value.trim();
         if (taskText) {
             const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-            tasks.push({text: taskText, completed: true})     
+            tasks.push({text: taskText, completed: false})     
             taskImput.value=""
             saveTasks(tasks)
             loadTasks()
         }
     }
-    
 
     //función para eliminar una tarea
+        const deteleTask = (taskText) => {
+            let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            tasks = tasks.filter((task)=>task.text !== taskText)
+            saveTasks(tasks)
+            loadTasks()
+        }
+
     //función para cambiar el estado de la tarea (completa/incompleta)
+    const toggleTaskCompletion = (taskText) => {
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        const task = tasks.find((task)=>task.text == taskText)
+        if (task) {
+            task.completed = !task.completed
+            saveTasks(tasks)
+            loadTasks()
+        }
+    }
 
     //evento para agregar la tarea
     addButton.addEventListener("click", addTask)

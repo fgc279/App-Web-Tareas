@@ -62,4 +62,20 @@ li {
     align-items: center;
 }
 
+li.completed {
+    /* text-decoration: line-through; */
+    background-color: #56b356;
+    color: white
+}
 
+li button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor:pointer;
+}
+
+li button:hover {
+    background-color: #e63935;
+}
